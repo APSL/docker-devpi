@@ -1,0 +1,4 @@
+devpi-web==2.6.0
+devpi-server==2.6.0
+devpi-client==2.4.1
+envtpl==0.5.0
