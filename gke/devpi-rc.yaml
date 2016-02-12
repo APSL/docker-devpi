@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: devpi
+  labels:
+    app: devpi
+    version: "2.6.0"
+spec:
+  replicas: 1
+  selector:
+    app: devpi
+    version: "2.6.0"
+  template:
+    metadata:
+      name: devpi-pod
+      labels:
+        app: devpi
+        version: "2.6.0"
+        role: service
+        group: devpi
+    spec:
+      containers:
+      - name: devpi
+        image: apsl/devpi:latest
+        env:
+        - name: DEVPI_PASSWORD
+          value: test
+        #- name: OUTSIDE_URL
+          #value: http://devpi.apsl.net
+        volumeMounts:
+        - name: devpi-data
+          mountPath: /data
+          readOnly: False
+        imagePullPolicy: Always    
+      - name: devpi-nginx
+        image: apsl/devpi-nginx:latest
+        env:
+        - name: DEVPI_DEFAULT_HOST
+          value: 127.0.0.1
+        ports:
+        - containerPort: 80
+          name: devpi
+        volumeMounts:
+        - name: devpi-data
+          mountPath: /data
+          readOnly: True
+        imagePullPolicy: Always
+      volumes:
+      - name: devpi-data
+        hostPath:
+          path: /var/devpi
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst

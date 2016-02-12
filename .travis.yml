@@ -5,6 +5,7 @@ services:
 script:
 - ls -lah
 - docker build -f Dockerfile -t apsl/devpi .
+- docker build -f nginx/Dockerfile -t apsl/devpi-nginx nginx/
 - docker-compose up -d
 - docker-compose ps
 - sleep 20
@@ -23,5 +24,6 @@ after_success:
 - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $DEVPI_VERSION; fi`
 - docker tag apsl/devpi apsl/devpi:$TAG
-- docker push apsl/devpi:$TAG
- 
+- docker push apsl/devpi:$TAG 
+- docker tag apsl/devpi-nginx apsl/devpi-nginx:$TAG
+- docker push apsl/devpi-nginx:$TAG

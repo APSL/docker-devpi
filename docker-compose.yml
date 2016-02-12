@@ -6,7 +6,7 @@ web:
         DEVPI_PASSWORD: test
         #OUTSIDE_URL: http://devpi.mydomain.com
 nginx:
-    build: nginx
+    image: apsl/devpi-nginx
     links:
         - web:devpi
     volumes_from:
