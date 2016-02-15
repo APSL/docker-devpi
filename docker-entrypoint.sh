@@ -18,8 +18,11 @@ if [ "$1" = 'devpi-server' ]; then
         OUTSIDE_URL_PARAMETER="--outside-url ${OUTSIDE_URL}"
     fi
     
+    if [ -n "${DEBUG}" ]; then
+        DEBUG_PARAMETER="--debug"
+    fi
     echo "[RUN]: Launching devpi-server"
-    exec devpi-server --restrict-modify root --serverdir /data/server --host 0.0.0.0 --port 8000 ${OUTSIDE_URL_PARAMETER}
+    exec devpi-server --restrict-modify root --serverdir /data/server --host 0.0.0.0 --port 8000 ${OUTSIDE_URL_PARAMETER} ${DEBUG_PARAMETER}
 fi
 
 echo "[RUN]: Builtin command not provided [devpi]"
